@@ -48,6 +48,13 @@ class TodoStorage(context: Context) {
         }
     }
 
+    fun removeFromHistory(itemIds: List<String>) {
+        val current = loadHistory()
+        val remaining = current.filter { it.id !in itemIds }
+        val json = gson.toJson(remaining)
+        prefs.edit().putString(KEY_HISTORY, json).apply()
+    }
+
     fun clear() {
         prefs.edit().remove(KEY_TODO_LIST).remove(KEY_HISTORY).apply()
     }

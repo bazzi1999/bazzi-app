@@ -11,7 +11,9 @@ import com.bazzi.app.model.TodoItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(
+    private val onDeleteHistoryItem: (TodoItem) -> Unit = {}
+) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     private var allItems: List<TodoItem> = listOf()
     private val expandedRootIds = mutableSetOf<String>()
@@ -114,6 +116,16 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
             } else {
                 ivCollapse.visibility = View.GONE
                 itemView.setOnClickListener(null)
+            }
+
+            // 仅根任务可长按删除整个系列
+            if (item.parentId == null) {
+                itemView.setOnLongClickListener {
+                    onDeleteHistoryItem(item)
+                    true
+                }
+            } else {
+                itemView.setOnLongClickListener(null)
             }
 
             // 左侧缩进（与主界面一致）

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,16 @@ class HistoryActivity : AppCompatActivity() {
     private var allHistory: List<TodoItem> = listOf()
     private var selectedDate: String? = null
 
+    private fun collectDescendantIds(rootId: String): List<String> {
+        val ids = mutableListOf<String>()
+        fun collect(id: String) {
+            ids.add(id)
+            allHistory.filter { it.parentId == id }.forEach { collect(it.id) }
+        }
+        collect(rootId)
+        return ids
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
@@ -42,7 +53,21 @@ class HistoryActivity : AppCompatActivity() {
         rvHistory = findViewById(R.id.rvHistory)
         tvEmpty = findViewById(R.id.tvEmpty)
 
-        adapter = HistoryAdapter()
+        adapter = HistoryAdapter(
+            onDeleteHistoryItem = { rootItem ->
+                AlertDialog.Builder(this)
+                    .setTitle("永久删除")
+                    .setMessage("确定要永久删除「${rootItem.title}」及其所有子任务吗？\n此操作不可恢复！")
+                    .setPositiveButton("删除") { _, _ ->
+                        val idsToRemove = collectDescendantIds(rootItem.id)
+                        storage.removeFromHistory(idsToRemove)
+                        allHistory = storage.loadHistory()
+                        updateList(allHistory)
+                    }
+                    .setNegativeButton("取消", null)
+                    .show()
+            }
+        )
         rvHistory.layoutManager = LinearLayoutManager(this)
         rvHistory.adapter = adapter
 
