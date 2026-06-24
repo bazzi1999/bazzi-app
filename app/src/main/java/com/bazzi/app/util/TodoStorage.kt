@@ -29,8 +29,12 @@ class TodoStorage(context: Context) {
 
     // ---- 历史记录（已删除的 Todo 系列） ----
     fun saveHistory(items: List<TodoItem>) {
-        val history = items.filter { it.isDeleted }
-        val json = gson.toJson(history)
+        // 加载已有历史
+        val existingHistory = loadHistory()
+        // 合并新删除的任务（去重）
+        val newDeleted = items.filter { it.isDeleted }
+        val merged = (existingHistory + newDeleted).distinctBy { it.id }
+        val json = gson.toJson(merged)
         prefs.edit().putString(KEY_HISTORY, json).apply()
     }
 
