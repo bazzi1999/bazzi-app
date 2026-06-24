@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etAddTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="任务标题..."
+        android:inputType="text"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_bg" />
+
+    <EditText
+        android:id="@+id/etAddDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="任务描述（选填）..."
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/edit_text_bg" />
+
+</LinearLayout>

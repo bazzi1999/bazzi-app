@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Bazziapp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#4FC3F7</item>
+        <item name="colorPrimaryVariant">#29B6F6</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#81D4FA</item>
+        <item name="colorSecondaryVariant">#4FC3F7</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:colorBackground">#E1F5FE</item>
+        <item name="android:windowBackground">#E1F5FE</item>
+    </style>
+</resources>
